@@ -1,90 +1,41 @@
 <template>
-  <div>
-    <h1>药品检索</h1>
-    <form @submit.prevent="searchDrug">
-      <label>
-        药品名称:
-        <input v-model="drugName" type="text" required />
-      </label>
-      <button type="submit" class="search-button">搜索</button>
-    </form>
-
-    <div v-if="drugs.length">
-      <h2>搜索结果:</h2>
-      <table>
-        <thead>
-        <tr>
-          <th>药品ID</th>
-          <th>药品名称</th>
-          <th>规格</th>
-          <th>生产商</th>
-          <th>批号</th>
-          <th>过期日期</th>
-          <th>单价</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="drug in drugs" :key="drug.drugId">
-          <td>{{ drug.drugId }}</td>
-          <td>{{ drug.name }}</td>
-          <td>{{ drug.specification }}</td>
-          <td>{{ drug.manufacturer }}</td>
-          <td>{{ drug.batchNumber }}</td>
-          <td>{{ formatDate(drug.expirationDate) }}</td>
-          <td>{{ drug.unitPrice }}</td>
-        </tr>
-        </tbody>
-      </table>
+  <div class="container">
+    <h1>药品搜索</h1>
+    <div class="card">
+      <h2>搜索药品</h2>
+      <form @submit.prevent="searchDrug">
+        <label for="name">药品名称:</label>
+        <input type="text" id="name" v-model="query.name" />
+        <button type="submit">搜索</button>
+      </form>
+    </div>
+    <div class="card" v-if="results.length">
+      <h2>搜索结果</h2>
+      <ul>
+        <li v-for="result in results" :key="result.id">{{ result.name }}</li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
-      drugName: '',
-      drugs: []
+      query: {
+        name: ''
+      },
+      results: []
     };
   },
   methods: {
     searchDrug() {
-      const token = localStorage.getItem('token');
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      axios
-          .get('/api/drugs/search', {
-            params: {
-              name: this.drugName
-            }
-          })
-          .then(response => {
-            this.drugs = response.data;
-          })
-          .catch(error => {
-            console.error('药品检索出错:', error);
-            alert('药品检索出错，请重试');
-          });
-    },
-    formatDate(dateString) {
-      if (!dateString) {
-        return 'Invalid Date';
-      }
-      try {
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) {
-          return 'Invalid Date';
-        }
-        return date.toLocaleDateString();
-      } catch (error) {
-        console.error('日期格式化错误:', error);
-        return 'Invalid Date';
-      }
+      // 模拟搜索结果
+      this.results = [
+        { id: 1, name: '药品A' },
+        { id: 2, name: '药品B' }
+      ];
     }
   }
 };
 </script>
-
-<style scoped>
-</style>

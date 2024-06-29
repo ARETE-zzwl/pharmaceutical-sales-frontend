@@ -1,23 +1,32 @@
+:root {
+    --nav-bg-color: #d0e4fe;
+    --nav-link-color: #333;
+    --nav-link-hover-bg-color: #99badd;
+    --nav-link-hover-color: #fff;
+    --border-radius: 5px;
+    --transition-speed: 0.3s;
+}
+
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #d0e4fe;
+    background-color: var(--nav-bg-color);
     padding: 10px;
 }
 
-/* 导航栏链接样式 */
 .nav-link {
-    text-decoration: none; /* 移除下划线 */
-    color: #333; /* 设置链接颜色 */
-    padding: 5px 10px; /* 添加内边距，使链接之间有一定的间距 */
-    margin: 0 5px; /* 添加外边距，使链接与导航栏边缘有一定的间距 */
-    border-radius: 5px; /* 设置链接边框圆角 */
-    transition: all 0.3s ease; /* 添加过渡效果，使悬停效果更平滑 */
+    text-decoration: none;
+    color: var(--nav-link-color);
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed) ease;
 }
 
-/* 导航栏链接悬停效果 */
-.nav-link:hover {
-    background-color: #99badd; /* 设置悬停时的背景颜色 */
-    color: #fff; /* 设置悬停时的文字颜色 */
+.nav-link:hover,
+.nav-link:focus {
+    background-color: var(--nav-link-hover-bg-color);
+    color: var(--nav-link-hover-color);
+    outline: none;
 }

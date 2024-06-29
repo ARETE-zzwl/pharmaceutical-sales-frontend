@@ -1,18 +1,27 @@
 <template>
-  <div>
-    <nav>
-      <router-link to="/" class="nav-link">首页</router-link>
-      <router-link to="/sales-query" class="nav-link">查询销售记录和财务报表</router-link>
-      <router-link to="/drug-inventory" class="nav-link">药品库存管理</router-link>
-      <router-link to="/drug-search" class="nav-link">药品检索</router-link>
-    </nav>
-    <h1>欢迎来到药品销售管理系统</h1>
-    <p>请从上方导航栏选择一个操作。</p>
+  <div class="container">
+    <h1>欢迎来到主页</h1>
+    <div class="card">
+      <h2>概述</h2>
+      <p>这里是主页的概述内容。</p>
+      <button @click="navigateTo('SalesQuery')">查看销售查询</button>
+    </div>
+    <div class="card">
+      <h2>功能概览</h2>
+      <ul>
+        <li><a @click="navigateTo('DrugInventory')">药品库存管理</a></li>
+        <li><a @click="navigateTo('DrugSearch')">药品搜索</a></li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HomeView'
+  methods: {
+    navigateTo(page) {
+      this.$router.push({ name: page });
+    }
+  }
 };
 </script>
