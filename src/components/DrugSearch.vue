@@ -1,14 +1,16 @@
 <template>
   <div>
     <h1>药品检索</h1>
-    <div>
-      <label for="searchName">药品名称：</label>
-      <input v-model="searchName" id="searchName" placeholder="输入药品名称" />
-      <button @click="searchDrugs">搜索</button>
-    </div>
+    <form @submit.prevent="searchDrug">
+      <label>
+        药品名称:
+        <input v-model="drugName" type="text" required />
+      </label>
+      <button type="submit">搜索</button>
+    </form>
 
     <div v-if="drugs.length">
-      <h3>检索结果：</h3>
+      <h2>搜索结果:</h2>
       <table>
         <thead>
         <tr>
@@ -39,21 +41,22 @@
 
 <script>
 import axios from 'axios';
-import { parseISO, format } from 'date-fns';
 
 export default {
   data() {
     return {
-      searchName: '',
+      drugName: '',
       drugs: []
     };
   },
   methods: {
-    searchDrugs() {
+    searchDrug() {
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       axios
           .get('/api/drugs/search', {
             params: {
-              name: this.searchName
+              name: this.drugName
             }
           })
           .then(response => {
@@ -61,6 +64,7 @@ export default {
           })
           .catch(error => {
             console.error('药品检索出错:', error);
+            alert('药品检索出错，请重试');
           });
     },
     formatDate(dateString) {
@@ -68,8 +72,11 @@ export default {
         return 'Invalid Date';
       }
       try {
-        const date = parseISO(dateString);
-        return format(date, 'yyyy-MM-dd');
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+          return 'Invalid Date';
+        }
+        return date.toLocaleDateString();
       } catch (error) {
         console.error('日期格式化错误:', error);
         return 'Invalid Date';
@@ -80,6 +87,19 @@ export default {
 </script>
 
 <style scoped>
+form {
+  margin-top: 20px;
+}
+form label {
+  display: block;
+  margin-bottom: 10px;
+}
+form input {
+  margin-left: 10px;
+}
+form button {
+  margin-top: 10px;
+}
 table {
   width: 100%;
   border-collapse: collapse;

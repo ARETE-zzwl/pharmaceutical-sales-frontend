@@ -1,50 +1,33 @@
 <template>
   <div>
-    <h1>批量创建药品</h1>
-
-    <form @submit.prevent="submitDrugs">
+    <h2>批量添加药品</h2>
+    <form @submit.prevent="createDrugs">
       <div v-for="(drug, index) in drugs" :key="index">
-        <h3>药品 {{ index + 1 }}</h3>
         <label>
-          名称:
-          <input v-model="drug.name" type="text" required/>
+          药品名称:
+          <input v-model="drug.name" type="text" required />
         </label>
         <label>
           规格:
-          <input v-model="drug.specification" type="text" required/>
+          <input v-model="drug.specification" type="text" required />
         </label>
         <label>
           生产商:
-          <input v-model="drug.manufacturer" type="text" required/>
+          <input v-model="drug.manufacturer" type="text" required />
         </label>
         <label>
           批号:
-          <input v-model="drug.batchNumber" type="text" required/>
+          <input v-model="drug.batchNumber" type="text" required />
         </label>
         <label>
           过期日期:
-          <input v-model="drug.expirationDate" type="date" required/>
-        </label>
-        <label>
-          单价:
-          <input v-model.number="drug.unitPrice" type="number" required/>
+          <input v-model="drug.expirationDate" type="date" required />
         </label>
         <button type="button" @click="removeDrug(index)">移除药品</button>
       </div>
-
       <button type="button" @click="addDrug">添加药品</button>
       <button type="submit">提交</button>
-      <button type="button" @click="hideBatchCreate">隐藏</button> <!-- 新增隐藏按钮 -->
     </form>
-
-    <div v-if="response">
-      <h2>创建结果</h2>
-      <ul>
-        <li v-for="drug in response" :key="drug.drugId">
-          {{ drug.name }} - {{ drug.specification }} - {{ drug.manufacturer }}
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 
@@ -60,11 +43,9 @@ export default {
           specification: '',
           manufacturer: '',
           batchNumber: '',
-          expirationDate: '',
-          unitPrice: null
+          expirationDate: ''
         }
-      ],
-      response: null
+      ]
     };
   },
   methods: {
@@ -74,38 +55,25 @@ export default {
         specification: '',
         manufacturer: '',
         batchNumber: '',
-        expirationDate: '',
-        unitPrice: null
+        expirationDate: ''
       });
     },
     removeDrug(index) {
       this.drugs.splice(index, 1);
     },
-    submitDrugs() {
+    createDrugs() {
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       axios
           .post('/api/drugs/batch', this.drugs)
           .then(response => {
-            this.response = response.data;
-            this.resetForm();
+            console.log('批量添加药品成功:', response.data);
+            alert('批量添加药品成功');
           })
           .catch(error => {
-            console.error('创建药品出错:', error);
+            console.error('批量添加药品失败:', error);
+            alert('批量添加药品失败，请重试');
           });
-    },
-    resetForm() {
-      this.drugs = [
-        {
-          name: '',
-          specification: '',
-          manufacturer: '',
-          batchNumber: '',
-          expirationDate: '',
-          unitPrice: null
-        }
-      ];
-    },
-    hideBatchCreate() {
-      this.$emit('hide-batch-create'); // 触发隐藏事件
     }
   }
 };
@@ -113,17 +81,17 @@ export default {
 
 <style scoped>
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  margin-top: 20px;
 }
-
-label {
+form label {
   display: block;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
-
-button {
+form input {
+  margin-left: 10px;
+}
+form button {
   margin-top: 10px;
+  margin-right: 10px;
 }
 </style>

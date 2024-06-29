@@ -5,8 +5,7 @@
     <!-- 通过ID查询销售记录 -->
     <div>
       <h2>按ID查询销售记录</h2>
-      <label for="salesIdInput">销售记录ID：</label>
-      <input type="text" v-model="queryId" id="salesIdInput" placeholder="输入销售记录ID" />
+      <input type="text" v-model="queryId" placeholder="输入销售记录ID" />
       <button @click="fetchSalesRecordById">搜索</button>
     </div>
 
@@ -54,8 +53,7 @@
     <!-- 通过日期查询财务报表 -->
     <div>
       <h2>按日期查询财务报表</h2>
-      <label for="queryDateInput">查询日期：</label>
-      <input type="date" v-model="queryDate" id="queryDateInput" />
+      <input type="date" v-model="queryDate" />
       <button @click="fetchFinancialStatsByDate">搜索</button>
     </div>
 
@@ -83,92 +81,25 @@
         </tbody>
       </table>
     </div>
-
-    <!-- 通过年份查询每月财务报表 -->
-    <div>
-      <h2>按年份查询每月财务报表</h2>
-      <label for="queryYearInput">查询年份：</label>
-      <input type="number" v-model="queryYear" id="queryYearInput" placeholder="输入年份" />
-      <button @click="fetchMonthlyStatsByYear">搜索</button>
-    </div>
-
-    <!-- 显示每月财务报表结果 -->
-    <div v-if="monthlyStats.length">
-      <h3>每月财务报表：</h3>
-      <table>
-        <thead>
-        <tr>
-          <th>年份</th>
-          <th>月份</th>
-          <th>销售金额</th>
-          <th>采购金额</th>
-          <th>退货金额</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="stat in monthlyStats" :key="`${stat.year}-${stat.month}`">
-          <td>{{ stat.year }}</td>
-          <td>{{ stat.month }}</td>
-          <td>{{ stat.totalSales }}</td>
-          <td>{{ stat.totalPurchases }}</td>
-          <td>{{ stat.totalReturns }}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 通过年份查询当年总财务报表 -->
-    <div>
-      <h2>按年份查询当年总财务报表</h2>
-      <label for="queryYearInputYearly">查询年份：</label>
-      <input type="number" v-model="queryYearly" id="queryYearInputYearly" placeholder="输入年份" />
-      <button @click="fetchYearlyStatsByYear">搜索</button>
-    </div>
-
-    <!-- 显示当年总财务报表结果 -->
-    <div v-if="yearlyStats && yearlyStats.length">
-      <h3>当年总财务报表：</h3>
-      <table>
-        <thead>
-        <tr>
-          <th>年份</th>
-          <th>销售金额</th>
-          <th>采购金额</th>
-          <th>退货金额</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="stat in yearlyStats" :key="stat.year">
-          <td>{{ stat.year }}</td>
-          <td>{{ stat.totalSales }}</td>
-          <td>{{ stat.totalPurchases }}</td>
-          <td>{{ stat.totalReturns }}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { parseISO, format } from 'date-fns';
 
 export default {
   data() {
     return {
       queryId: '',
       queryDate: '',
-      queryYear: '',
-      queryYearly: '',
       salesRecord: null,
-      financialStats: [],
-      monthlyStats: [],
-      yearlyStats: null
+      financialStats: []
     };
   },
   methods: {
     fetchSalesRecordById() {
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       axios
           .get(`/api/sales/${this.queryId}`)
           .then(response => {
@@ -179,6 +110,8 @@ export default {
           });
     },
     fetchFinancialStatsByDate() {
+      const token = localStorage.getItem('token');
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       axios
           .get('/api/financialstats/byDate', {
             params: {
@@ -186,38 +119,10 @@ export default {
             }
           })
           .then(response => {
-            this.financialStats = response.data;
+            this.financialStats = [response.data];
           })
           .catch(error => {
             console.error('获取财务报表出错:', error);
-          });
-    },
-    fetchMonthlyStatsByYear() {
-      axios
-          .get('/api/financialstats/monthlyStats', {
-            params: {
-              year: this.queryYear
-            }
-          })
-          .then(response => {
-            this.monthlyStats = response.data;
-          })
-          .catch(error => {
-            console.error('获取每月财务报表出错:', error);
-          });
-    },
-    fetchYearlyStatsByYear() {
-      axios
-          .get('/api/financialstats/yearlyStats', {
-            params: {
-              year: this.queryYearly
-            }
-          })
-          .then(response => {
-            this.yearlyStats = response.data;
-          })
-          .catch(error => {
-            console.error('获取当年总财务报表出错:', error);
           });
     },
     formatDate(dateString) {
@@ -225,8 +130,11 @@ export default {
         return 'Invalid Date';
       }
       try {
-        const date = parseISO(dateString);
-        return format(date, 'yyyy-MM-dd');
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+          return 'Invalid Date';
+        }
+        return date.toLocaleDateString();
       } catch (error) {
         console.error('日期格式化错误:', error);
         return 'Invalid Date';
@@ -248,5 +156,19 @@ table, th, td {
 th, td {
   padding: 10px;
   text-align: left;
+}
+form {
+  margin-top: 20px;
+}
+form label {
+  display: block;
+  margin-bottom: 10px;
+}
+form input {
+  margin-left: 10px;
+}
+form button {
+  margin-top: 10px;
+  margin-right: 10px;
 }
 </style>

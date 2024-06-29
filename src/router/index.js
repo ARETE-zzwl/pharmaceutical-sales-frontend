@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue'; // 更新导入路径
+import HomeView from '../views/HomeView.vue';
+import LoginView from '../views/LoginView.vue';
 import SalesQuery from '../components/SalesQuery.vue';
 import DrugInventory from '../components/DrugInventory.vue';
 import DrugSearch from '../components/DrugSearch.vue';
@@ -7,8 +8,13 @@ import DrugSearch from '../components/DrugSearch.vue';
 const routes = [
     {
         path: '/',
-        name: 'HomeView',
+        name: 'Home',
         component: HomeView
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: LoginView
     },
     {
         path: '/sales-query',
@@ -16,7 +22,7 @@ const routes = [
         component: SalesQuery
     },
     {
-        path: '/drug-inventory', // 新增
+        path: '/drug-inventory',
         name: 'DrugInventory',
         component: DrugInventory
     },
