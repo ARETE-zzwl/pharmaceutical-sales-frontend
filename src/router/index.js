@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue'; // 更新导入路径
 import SalesQuery from '../components/SalesQuery.vue';
-import DrugBatchCreate from '../components/DrugBatchCreate.vue';
+import DrugInventory from '../components/DrugInventory.vue';
+import DrugSearch from '../components/DrugSearch.vue';
 
 const routes = [
     {
@@ -15,9 +16,14 @@ const routes = [
         component: SalesQuery
     },
     {
-        path: '/drug-batch-create',
-        name: 'DrugBatchCreate',
-        component: DrugBatchCreate
+        path: '/drug-inventory', // 新增
+        name: 'DrugInventory',
+        component: DrugInventory
+    },
+    {
+        path: '/drug-search',
+        name: 'DrugSearch',
+        component: DrugSearch
     }
 ];
 

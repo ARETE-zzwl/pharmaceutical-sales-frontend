@@ -7,33 +7,34 @@
         <h3>药品 {{ index + 1 }}</h3>
         <label>
           名称:
-          <input v-model="drug.name" type="text" required />
+          <input v-model="drug.name" type="text" required/>
         </label>
         <label>
           规格:
-          <input v-model="drug.specification" type="text" required />
+          <input v-model="drug.specification" type="text" required/>
         </label>
         <label>
           生产商:
-          <input v-model="drug.manufacturer" type="text" required />
+          <input v-model="drug.manufacturer" type="text" required/>
         </label>
         <label>
           批号:
-          <input v-model="drug.batchNumber" type="text" required />
+          <input v-model="drug.batchNumber" type="text" required/>
         </label>
         <label>
           过期日期:
-          <input v-model="drug.expirationDate" type="date" required />
+          <input v-model="drug.expirationDate" type="date" required/>
         </label>
         <label>
           单价:
-          <input v-model.number="drug.unitPrice" type="number" required />
+          <input v-model.number="drug.unitPrice" type="number" required/>
         </label>
         <button type="button" @click="removeDrug(index)">移除药品</button>
       </div>
 
       <button type="button" @click="addDrug">添加药品</button>
       <button type="submit">提交</button>
+      <button type="button" @click="hideBatchCreate">隐藏</button> <!-- 新增隐藏按钮 -->
     </form>
 
     <div v-if="response">
@@ -102,6 +103,9 @@ export default {
           unitPrice: null
         }
       ];
+    },
+    hideBatchCreate() {
+      this.$emit('hide-batch-create'); // 触发隐藏事件
     }
   }
 };
@@ -113,10 +117,12 @@ form {
   flex-direction: column;
   gap: 10px;
 }
+
 label {
   display: block;
   margin-top: 10px;
 }
+
 button {
   margin-top: 10px;
 }
