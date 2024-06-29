@@ -78,20 +78,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-form {
-  margin-top: 20px;
-}
-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-form input {
-  margin-left: 10px;
-}
-form button {
-  margin-top: 10px;
-  margin-right: 10px;
-}
-</style>

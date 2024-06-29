@@ -6,7 +6,7 @@
     <div>
       <h2>按ID查询销售记录</h2>
       <input type="text" v-model="queryId" placeholder="输入销售记录ID" />
-      <button @click="fetchSalesRecordById">搜索</button>
+      <button @click="fetchSalesRecordById" class="search-button">搜索</button>
     </div>
 
     <!-- 显示销售记录结果 -->
@@ -54,7 +54,7 @@
     <div>
       <h2>按日期查询财务报表</h2>
       <input type="date" v-model="queryDate" />
-      <button @click="fetchFinancialStatsByDate">搜索</button>
+      <button @click="fetchFinancialStatsByDate" class="search-button">搜索</button>
     </div>
 
     <!-- 显示财务报表结果 -->
@@ -143,32 +143,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-table, th, td {
-  border: 1px solid black;
-}
-th, td {
-  padding: 10px;
-  text-align: left;
-}
-form {
-  margin-top: 20px;
-}
-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-form input {
-  margin-left: 10px;
-}
-form button {
-  margin-top: 10px;
-  margin-right: 10px;
-}
-</style>

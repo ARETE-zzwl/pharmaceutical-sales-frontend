@@ -6,7 +6,7 @@
         药品名称:
         <input v-model="drugName" type="text" required />
       </label>
-      <button type="submit">搜索</button>
+      <button type="submit" class="search-button">搜索</button>
     </form>
 
     <div v-if="drugs.length">
@@ -87,29 +87,4 @@ export default {
 </script>
 
 <style scoped>
-form {
-  margin-top: 20px;
-}
-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-form input {
-  margin-left: 10px;
-}
-form button {
-  margin-top: 10px;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-table, th, td {
-  border: 1px solid black;
-}
-th, td {
-  padding: 10px;
-  text-align: left;
-}
 </style>

@@ -1,38 +1,42 @@
 <template>
-  <div>
+  <div class="login-container">
     <div v-if="!isLoggedIn">
       <h2>用户登录</h2>
       <form @submit.prevent="login">
-        <label>
+        <label class="login-label">
           用户名:
-          <input v-model="loginData.username" type="text" required />
+          <input v-model="loginData.username" type="text" required/>
         </label>
-        <label>
+        <label class="login-label">
           密码:
-          <input v-model="loginData.password" type="password" required />
+          <input v-model="loginData.password" type="password" required/>
         </label>
-        <button type="submit">登录</button>
+        <div class="login-buttons">
+          <button type="submit">登录</button>
+          <button type="button" @click="toggleRegister" class="register-button">注册</button>
+        </div>
       </form>
 
-      <button @click="toggleRegister">注册</button>
 
       <div v-if="showRegister">
         <h2>用户注册</h2>
         <form @submit.prevent="register">
-          <label>
+          <label class="login-label">
             用户名:
-            <input v-model="registerData.username" type="text" required />
+            <input v-model="registerData.username" type="text" required/>
           </label>
-          <label>
+          <label class="login-label">
             密码:
-            <input v-model="registerData.password" type="password" required />
+            <input v-model="registerData.password" type="password" required/>
           </label>
-          <label>
+          <label class="login-label">
             角色ID:
-            <input v-model.number="registerData.role.roleId" type="number" required />
+            <input v-model.number="registerData.role.roleId" type="number" required/>
           </label>
-          <button type="submit">注册</button>
-          <button type="button" @click="toggleRegister">取消</button>
+          <div class="login-buttons">
+            <button type="submit" >注册</button>
+            <button type="button" @click="toggleRegister" class="register-button">取消</button>
+          </div>
         </form>
       </div>
     </div>
@@ -82,7 +86,7 @@ export default {
             this.username = this.loginData.username;
             this.isLoggedIn = true;
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            this.$router.push({ name: 'Home' });
+            this.$router.push({name: 'Home'});
             alert('登录成功');
           })
           .catch(error => {
@@ -109,20 +113,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-form {
-  margin-top: 20px;
-}
-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-form input {
-  margin-left: 10px;
-}
-form button {
-  margin-top: 10px;
-  margin-right: 10px;
-}
-</style>

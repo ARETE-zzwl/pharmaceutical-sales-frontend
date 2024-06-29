@@ -2,8 +2,8 @@
   <div>
     <h1>药品库存管理</h1>
 
-    <button @click="fetchInventories">获取药品库存</button>
-    <button @click="toggleBatchCreateForm">批量添加药品</button>
+    <button @click="fetchInventories" class="add-drug-btn">获取药品库存</button>
+    <button @click="toggleBatchCreateForm" class="add-drug-btn">批量添加药品</button>
 
     <div v-if="showBatchCreateForm">
       <h2>批量创建药品</h2>
@@ -33,11 +33,11 @@
           单价:
           <input v-model="drug.unitPrice" type="number" />
         </label>
-        <button @click="removeDrug(index)">移除药品</button>
+        <button @click="removeDrug(index)" class="remove-drug-btn">移除药品</button>
       </div>
-      <button @click="addDrug">添加药品</button>
-      <button @click="submitDrugs">提交</button>
-      <button @click="toggleBatchCreateForm">隐藏</button>
+      <button @click="addDrug" class="add-drug-btn">添加药品</button>
+      <button @click="submitDrugs" class="submit-btn">提交</button>
+      <button @click="toggleBatchCreateForm" class="hide-btn">隐藏</button>
     </div>
 
     <div v-if="showInventory">
@@ -240,20 +240,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-form {
-  margin-top: 20px;
-}
-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-form input {
-  margin-left: 10px;
-}
-form button {
-  margin-top: 10px;
-  margin-right: 10px;
-}
-</style>

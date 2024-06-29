@@ -1,0 +1,120 @@
+/* 登录容器样式 */
+.login-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 表单标签和输入框样式 */
+.login-label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* 登录和注册按钮样式 */
+.login-buttons {
+    display: flex;
+    justify-content: space-between; /* 登录和注册按钮之间等距分布 */
+    align-items: center; /* 垂直居中 */
+    margin-top: 20px; /* 调整按钮与表单内容之间的间距 */
+}
+
+.login-container button[type="submit"]{
+    padding: 10px 20px;
+    background-color: #4CAF50; /* 绿色 */
+    border: none; /* 移除边框，因为已经设置了背景色 */
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 添加过渡效果 */
+    background: linear-gradient(to right, #FF9800, #FF5733);
+    /* 动画效果，使阴影发生变化 */
+    transition: box-shadow 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    &:hover {
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.login-container button[type="button"]:hover {
+    background-color: #45a049; /* 绿色略暗 */
+}
+
+.register-button {
+    /* 已有的样式 */
+    margin-left: auto; /* 将元素推到容器右边 */
+    background-color: #007BFF; /* 蓝色背景 */
+    border: none; /* 移除边框，因为我们使用伪元素来模拟边框 */
+    border-radius: 4px;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+
+    /* 添加边框渐变效果 */
+    position: relative;
+    z-index: 1;
+
+    /* 伪元素来模拟边框 */
+    ::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        z-index: -1;
+        border-radius: 6px; /* 比按钮本身的圆角稍大 */
+        background: linear-gradient(to right, #0096ff, #0056b3); /* 渐变效果 */
+    }
+
+    /* 添加阴影效果 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    /* 鼠标悬停效果 */
+    &:hover {
+        /* 渐变颜色变化 */
+        ::before {
+            background: linear-gradient(to right, #00b0ff, #004085);
+        }
+
+        /* 阴影增强 */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* 标题和提示文本样式 */
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-container p {
+    text-align: center;
+    margin-top: 10px;
+    color: #666;
+}
+
+/* 响应式布局（可选） */
+@media (max-width: 600px) {
+    .login-container {
+        max-width: 100%;
+    }
+}

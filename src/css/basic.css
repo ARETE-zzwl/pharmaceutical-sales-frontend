@@ -1,0 +1,167 @@
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007BFF; /* 蓝色背景 */
+    border: none;
+    border-radius: 5px; /* 圆角 */
+    cursor: pointer;
+    transition: all 0.3s ease; /* 平滑的过渡效果 */
+}
+button:hover {
+    background-color: #0056b3; /* 悬停时颜色变深 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 悬停时添加阴影 */
+}
+button:active {
+    transform: scale(0.98); /* 轻微缩小 */
+    box-shadow: none; /* 移除阴影 */
+}
+h1 {
+    color: #42b983;
+}
+h2{
+    color: #007BFF;
+}
+input {
+    padding: 10px;
+    border: 1px solid #ccc; /* 边框颜色 */
+    border-radius: 4px; /* 边框圆角 */
+    width: 80%; /* 根据需要设置宽度 */
+    box-sizing: border-box; /* 确保padding和border不会增加元素的总宽度 */
+    font-size: 16px; /* 字体大小 */
+    color: #333; /* 字体颜色 */
+    transition: border-color 0.3s ease; /* 过渡效果，使边框颜色变化更平滑 */
+}
+
+/* 表格基本样式 */
+table {
+    width: 80%;
+    border-collapse: collapse; /* 合并相邻边框 */
+    margin-bottom: 20px; /* 与下方元素之间的间距 */
+}
+
+/* 表格头部样式 */
+thead {
+    background-color: #f2f2f2; /* 浅灰色背景 */
+}
+
+th, td {
+    padding: 10px; /* 单元格内边距 */
+    text-align: left; /* 文本左对齐 */
+    border-bottom: 1px solid #ddd; /* 底部边框 */
+}
+
+/* 表格头部单元格样式 */
+th {
+    font-weight: bold; /* 加粗字体 */
+    color: #333; /* 字体颜色 */
+}
+
+/* 表格行悬停效果 */
+tr:hover {
+    background-color: #f5f5f5; /* 鼠标悬停时背景色变浅 */
+}
+
+/* 表格条纹效果（可选） */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* 偶数行背景色稍浅 */
+}
+
+form {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none; /* 适用于textarea */
+}
+/* 标签样式 */
+label {
+    width: 60%;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+/* 隐藏按钮样式 */
+.hide-btn {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+/* 提交按钮样式 */
+.submit-btn {
+    background-color: #007BFF; /* Blue */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+/* 移除药品按钮样式 */
+.remove-drug-btn {
+    background-color: #f86c6b; /* Pink */
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+/* 列表项样式 */
+li {
+    padding: 10px; /* 列表项内边距 */
+    border-bottom: 1px solid #ddd; /* 底部边框 */
+    position: relative; /* 为了在子元素中使用绝对定位 */
+}
+
+/* 列表项内容样式（如果需要的话） */
+li a {
+    text-decoration: none; /* 移除下划线 */
+    color: #333; /* 文本颜色 */
+    display: block; /* 使得整个列表项区域可点击 */
+    transition: all 0.3s ease; /* 过渡效果，用于鼠标悬停时 */
+}
+
+/* 鼠标悬停效果 */
+li:hover {
+    background-color: #f5f5f5; /* 悬停时背景色变浅 */
+}
+
+li:hover a {
+    color: #007BFF; /* 悬停时文本颜色变化 */
+}
+/* 如果有子列表（嵌套列表） */
+ul ul {
+    padding-left: 20px; /* 嵌套列表的缩进 */
+}
+.add-drug-btn {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}

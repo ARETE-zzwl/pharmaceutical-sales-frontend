@@ -26,19 +26,3 @@ export default {
   }
 };
 </script>
-
-<style>
-nav {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-nav a {
-  text-decoration: none;
-  color: #42b983;
-}
-nav a.router-link-exact-active {
-  font-weight: bold;
-  color: #42b983;
-}
-</style>
