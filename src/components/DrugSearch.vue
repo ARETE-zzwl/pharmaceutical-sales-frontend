@@ -4,7 +4,7 @@
     <div>
       <label for="searchName">药品名称：</label>
       <input v-model="searchName" id="searchName" placeholder="输入药品名称" />
-      <button @click="searchDrugs">搜索</button>
+      <button @click="searchDrugs" class="search-button">搜索</button>
     </div>
 
     <div v-if="drugs.length">
@@ -80,16 +80,79 @@ export default {
 </script>
 
 <style scoped>
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-table, th, td {
-  border: 1px solid black;
-}
-th, td {
+input{
   padding: 10px;
-  text-align: left;
+  border: 1px solid #ccc; /* 边框颜色 */
+  border-radius: 4px; /* 边框圆角 */
+  width: 80%; /* 根据需要设置宽度 */
+  box-sizing: border-box; /* 确保padding和border不会增加元素的总宽度 */
+  font-size: 16px; /* 字体大小 */
+  color: #333; /* 字体颜色 */
+  transition: border-color 0.3s ease; /* 过渡效果，使边框颜色变化更平滑 */
+}
+/* 表格基本样式 */
+table {
+  width: 80%;
+  border-collapse: collapse; /* 合并相邻边框 */
+  margin-bottom: 20px; /* 与下方元素之间的间距 */
+}
+
+/* 表格头部样式 */
+thead {
+  background-color: #f2f2f2; /* 浅灰色背景 */
+}
+
+th, td {
+  padding: 10px; /* 单元格内边距 */
+  text-align: left; /* 文本左对齐 */
+  border-bottom: 1px solid #ddd; /* 底部边框 */
+}
+
+/* 表格头部单元格样式 */
+th {
+  font-weight: bold; /* 加粗字体 */
+  color: #333; /* 字体颜色 */
+}
+
+/* 表格行悬停效果 */
+tr:hover {
+  background-color: #f5f5f5; /* 鼠标悬停时背景色变浅 */
+}
+
+/* 表格条纹效果（可选） */
+tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行背景色稍浅 */
+}
+
+.search-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007BFF; /* 蓝色背景 */
+  border: none;
+  border-radius: 5px; /* 圆角 */
+  cursor: pointer;
+  transition: all 0.3s ease; /* 平滑的过渡效果 */
+}
+
+/* 悬停效果 */
+.search-button:hover {
+  background-color: #0056b3; /* 悬停时颜色变深 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 悬停时添加阴影 */
+}
+
+/* 活动状态样式（例如，当按钮被点击时） */
+.search-button:active {
+  transform: scale(0.98); /* 轻微缩小 */
+  box-shadow: none; /* 移除阴影 */
+}
+
+/* 如果需要禁用按钮的样式 */
+.search-button.disabled,
+.search-button[disabled] {
+  background-color: #ccc; /* 禁用时颜色变浅 */
+  color: #999; /* 禁用时文字颜色变浅 */
+  cursor: not-allowed; /* 禁用时鼠标样式变为禁止 */
 }
 </style>

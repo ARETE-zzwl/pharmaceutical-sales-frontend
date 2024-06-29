@@ -1,14 +1,14 @@
 <template>
   <div>
     <h1>药品库存管理</h1>
-    <button @click="goToBatchCreate">批量添加药品</button>
+    <button @click="goToBatchCreate" class="add-drug-btn">批量添加药品</button>
     <div v-if="showBatchCreate">
       <DrugBatchCreate @hide-batch-create="hideBatchCreate"/>
     </div>
 
     <div>
       <h2>所有药品库存</h2>
-      <button @click="fetchAllInventories">获取库存</button>
+      <button @click="fetchAllInventories" class="add-drug-btn">获取库存</button>
       <button v-if="showInventories" @click="hideInventories">隐藏库存</button>
       <div v-if="showInventories">
         <table>
@@ -98,6 +98,40 @@ export default {
 </script>
 
 <style scoped>
+/* 表格基本样式 */
+table {
+  width: 80%;
+  border-collapse: collapse; /* 合并相邻边框 */
+  margin-bottom: 20px; /* 与下方元素之间的间距 */
+}
+
+/* 表格头部样式 */
+thead {
+  background-color: #f2f2f2; /* 浅灰色背景 */
+}
+
+th, td {
+  padding: 10px; /* 单元格内边距 */
+  text-align: left; /* 文本左对齐 */
+  border-bottom: 1px solid #ddd; /* 底部边框 */
+}
+
+/* 表格头部单元格样式 */
+th {
+  font-weight: bold; /* 加粗字体 */
+  color: #333; /* 字体颜色 */
+}
+
+/* 表格行悬停效果 */
+tr:hover {
+  background-color: #f5f5f5; /* 鼠标悬停时背景色变浅 */
+}
+
+/* 表格条纹效果（可选） */
+tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行背景色稍浅 */
+}
+
 button {
   margin-bottom: 20px;
 }
@@ -112,5 +146,18 @@ table, th, td {
 th, td {
   padding: 10px;
   text-align: left;
+}
+.add-drug-btn {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 </style>
