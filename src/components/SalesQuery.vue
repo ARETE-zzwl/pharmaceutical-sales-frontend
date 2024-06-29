@@ -6,7 +6,7 @@
     <div>
       <h2>按ID查询销售记录</h2>
       <label for="salesIdInput">销售记录ID：</label>
-      <input type="text" v-model="queryId" id="salesIdInput" placeholder="输入销售记录ID" />
+      <input type="text" v-model="queryId" id="salesIdInput" placeholder="输入销售记录ID"/>
       <button @click="fetchSalesRecordById" class="search-button">搜索</button>
     </div>
 
@@ -55,7 +55,7 @@
     <div>
       <h2>按日期查询财务报表</h2>
       <label for="queryDateInput">查询日期：</label>
-      <input type="date" v-model="queryDate" id="queryDateInput" />
+      <input type="date" v-model="queryDate" id="queryDateInput"/>
       <button @click="fetchFinancialStatsByDate" class="search-button">搜索</button>
     </div>
 
@@ -88,7 +88,7 @@
     <div>
       <h2>按年份查询每月财务报表</h2>
       <label for="queryYearInput">查询年份：</label>
-      <input type="number" v-model="queryYear" id="queryYearInput" placeholder="输入年份" />
+      <input type="number" v-model="queryYear" id="queryYearInput" placeholder="输入年份"/>
       <button @click="fetchMonthlyStatsByYear" class="search-button">搜索</button>
     </div>
 
@@ -121,7 +121,7 @@
     <div>
       <h2>按年份查询当年总财务报表</h2>
       <label for="queryYearInputYearly">查询年份：</label>
-      <input type="number" v-model="queryYearly" id="queryYearInputYearly" placeholder="输入年份" />
+      <input type="number" v-model="queryYearly" id="queryYearInputYearly" placeholder="输入年份"/>
       <button @click="fetchYearlyStatsByYear" class="search-button">搜索</button>
     </div>
 
@@ -152,7 +152,7 @@
 
 <script>
 import axios from 'axios';
-import { parseISO, format } from 'date-fns';
+import {parseISO, format} from 'date-fns';
 
 export default {
   data() {
@@ -237,12 +237,23 @@ export default {
 </script>
 
 <style scoped>
-input{
-  width: 80%;
-  background-color: #f2f2f2; /* 禁用时背景颜色 */
-  color: #999; /* 禁用时字体颜色 */
-  cursor: not-allowed; /* 禁用时鼠标指针样式 */
+h1 {
+  color: #42b983;
 }
+h2{
+  color: #007BFF;
+}
+input {
+  padding: 10px;
+  border: 1px solid #ccc; /* 边框颜色 */
+  border-radius: 4px; /* 边框圆角 */
+  width: 80%; /* 根据需要设置宽度 */
+  box-sizing: border-box; /* 确保padding和border不会增加元素的总宽度 */
+  font-size: 16px; /* 字体大小 */
+  color: #333; /* 字体颜色 */
+  transition: border-color 0.3s ease; /* 过渡效果，使边框颜色变化更平滑 */
+}
+
 /* 表格基本样式 */
 table {
   width: 80%;

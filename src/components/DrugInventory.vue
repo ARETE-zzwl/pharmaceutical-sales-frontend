@@ -7,9 +7,9 @@
     </div>
 
     <div>
-      <h2>所有药品库存</h2>
+      <h1>所有药品库存</h1>
       <button @click="fetchAllInventories" class="add-drug-btn">获取库存</button>
-      <button v-if="showInventories" @click="hideInventories">隐藏库存</button>
+      <button v-if="showInventories" @click="hideInventories" class="hide-btn">隐藏库存</button>
       <div v-if="showInventories">
         <table>
           <thead>
@@ -98,6 +98,22 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  color: #42b983;
+}
+.hide-btn {
+  background-color: #f44336; /* Red */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
 /* 表格基本样式 */
 table {
   width: 80%;
