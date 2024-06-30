@@ -9,9 +9,7 @@ import DrugSearch from '../components/DrugSearch.vue';
 const routes = [
     {
         path: '/',
-        name: 'Home',
-        component: HomeView,
-        meta: { requiresAuth: true }
+        redirect: '/login'
     },
     {
         path: '/login',
@@ -22,6 +20,12 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: RegisterView
+    },
+    {
+        path: '/home',
+        name: 'Home',
+        component: HomeView,
+        meta: { requiresAuth: true }
     },
     {
         path: '/sales-query',

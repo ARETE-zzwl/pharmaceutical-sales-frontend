@@ -35,9 +35,16 @@ export default {
       axios
           .post('/api/auth/login', this.loginData)
           .then(response => {
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            this.$router.push({ name: 'Home' });
+            const token = response.data;
+            console.log(token);
+            // 检查 token 是否包含两个点字符
+            if (token.split('.').length === 3) {
+              localStorage.setItem('token', `Bearer ${token}`);
+              this.$router.push({ name: 'Home' });
+            } else {
+              alert('登录失败，获取的令牌格式不正确');
+              console.error('登录失败，获取的令牌格式不正确:', token);
+            }
           })
           .catch(error => {
             console.error('登录失败:', error);
