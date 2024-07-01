@@ -11,8 +11,12 @@
         <input v-model="registerData.password" type="password" required />
       </label>
       <label class="login-label">
-        角色ID:
-        <input v-model.number="registerData.role.roleId" type="number" required />
+        角色:
+        <select v-model.number="registerData.role.roleId" required>
+          <option v-for="role in roles" :key="role.roleId" :value="role.roleId">
+            {{ role.roleName }}
+          </option>
+        </select>
       </label>
       <div class="login-buttons">
         <button type="submit" class="submit-btn">注册</button>
@@ -32,19 +36,34 @@ export default {
         username: '',
         password: '',
         role: {
-          roleId: 1
+          roleId: 1 // Default role ID
         }
-      }
+      },
+      roles: [] // Array to store roles fetched from the backend
     };
   },
+  created() {
+    this.fetchRoles(); // Fetch roles when the component is created
+  },
   methods: {
+    fetchRoles() {
+      axios
+          .get('/api/roles') // Endpoint to fetch roles
+          .then(response => {
+            this.roles = response.data; // Store the roles in the component's data
+          })
+          .catch(error => {
+            console.error('获取角色失败:', error);
+            alert('获取角色失败，请重试');
+          });
+    },
     register() {
       axios
-          .post('/api/auth/register', this.registerData)
+          .post('/api/auth/register', this.registerData) // Endpoint to register the user
           .then(response => {
             console.log('注册成功:', response.data);
             alert('注册成功，请登录');
-            this.$router.push({ name: 'Login' });
+            this.$router.push({ name: 'Login' }); // Navigate to login page on success
           })
           .catch(error => {
             console.error('注册失败:', error);
@@ -52,7 +71,7 @@ export default {
           });
     },
     goToLogin() {
-      this.$router.push({ name: 'Login' });
+      this.$router.push({ name: 'Login' }); // Navigate to login page
     }
   }
 };
