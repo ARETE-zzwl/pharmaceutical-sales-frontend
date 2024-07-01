@@ -114,7 +114,7 @@ export default {
       axios
           .get('/api/drugs')
           .then(response => {
-            this.drugs = response.data;
+            this.drugs = response.data.content; // 更新为适应返回结构体
           })
           .catch(error => {
             console.error('获取药品信息失败:', error);
@@ -174,21 +174,6 @@ export default {
     },
     navigateTo(page) {
       this.$router.push({ name: page });
-    },
-    formatDate(dateString) {
-      if (!dateString) {
-        return 'Invalid Date';
-      }
-      try {
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) {
-          return 'Invalid Date';
-        }
-        return date.toLocaleDateString();
-      } catch (error) {
-        console.error('日期格式化错误:', error);
-        return 'Invalid Date';
-      }
     }
   }
 };
