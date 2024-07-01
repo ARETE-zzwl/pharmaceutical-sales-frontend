@@ -27,7 +27,9 @@
         <tr v-for="result in predictionResults" :key="result.drugId">
           <td>{{ result.drugId }}</td>
           <td>{{ result.drugName }}</td>
-          <td>{{ result.predictedQuantity }}</td>
+          <td :class="{ warning: result.predictedQuantity < 200 && !isNaN(result.predictedQuantity) }">
+            {{ result.predictedQuantity }}
+          </td>
         </tr>
         </tbody>
       </table>
@@ -156,6 +158,10 @@ th, td {
 
 th {
   background-color: #f4f4f4;
+}
+
+.warning {
+  color: red;
 }
 
 /* 加载动画样式 */

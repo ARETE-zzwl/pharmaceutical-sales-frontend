@@ -3,8 +3,61 @@
     <h1>药品库存</h1>
     <div class="card">
       <h2>库存详情</h2>
-      <button @click="fetchExpiringSoon">查询即将过期的药品</button>
-      <table v-if="!showExpiringSoon">
+      <div class="button-container">
+        <button @click="toggleView('expiringSoon')">
+          {{ showExpiringSoon ? '显示所有库存' : '查询即将过期的药品' }}
+        </button>
+        <button @click="toggleView('expired')">
+          {{ showExpired ? '显示所有库存' : '查询已过期的药品' }}
+        </button>
+        <button v-if="showExpiringSoon || showExpired" @click="toggleView('all')">
+          显示所有库存
+        </button>
+      </div>
+
+      <table v-if="showExpiringSoon">
+        <thead>
+        <tr>
+          <th>药品ID</th>
+          <th>药品名称</th>
+          <th>库存量</th>
+          <th>批号</th>
+          <th>过期时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in expiringSoon" :key="item.drugId">
+          <td>{{ item.drugId }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.batchNumber }}</td>
+          <td :class="{ highlight: true }">{{ formatDate(item.expirationDate) }}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <table v-else-if="showExpired">
+        <thead>
+        <tr>
+          <th>药品ID</th>
+          <th>药品名称</th>
+          <th>库存量</th>
+          <th>批号</th>
+          <th>过期时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in expired" :key="item.drugId">
+          <td>{{ item.drugId }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.batchNumber }}</td>
+          <td :class="{ highlight: true }">{{ formatDate(item.expirationDate) }}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <table v-else>
         <thead>
         <tr>
           <th>药品名称</th>
@@ -29,32 +82,12 @@
         </tr>
         </tbody>
       </table>
-      <table v-else>
-        <thead>
-        <tr>
-          <th>药品ID</th>
-          <th>药品名称</th>
-          <th>库存量</th>
-          <th>批号</th>
-          <th>过期时间</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="drug in expiringSoon" :key="drug.drugId">
-          <td>{{ drug.drugId }}</td>
-          <td>{{ drug.name }}</td>
-          <td>{{ drug.quantity }}</td>
-          <td>{{ drug.batchNumber }}</td>
-          <td class="highlight">{{ formatDate(drug.expirationDate) }}</td>
-        </tr>
-        </tbody>
-      </table>
     </div>
 
-    <button @click="toggleForm" v-if="!showExpiringSoon">{{ showForm ? '取消新增库存' : '新增库存' }}</button>
+    <button @click="toggleForm">{{ showForm ? '取消新增库存' : '新增库存' }}</button>
 
     <!-- 库存模态框 -->
-    <div v-if="(showForm || showEditModal) && !showExpiringSoon" class="modal">
+    <div v-if="showForm || showEditModal" class="modal">
       <div class="modal-content">
         <h2>{{ editMode ? '编辑库存' : '新增库存' }}</h2>
         <form @submit.prevent="submitInventory">
@@ -90,6 +123,7 @@ export default {
     return {
       inventory: [],
       expiringSoon: [],
+      expired: [],
       form: {
         drug: {
           drugId: null
@@ -102,7 +136,8 @@ export default {
       showEditModal: false,
       editMode: false,
       editId: null,
-      showExpiringSoon: false
+      showExpiringSoon: false,
+      showExpired: false
     };
   },
   created() {
@@ -133,7 +168,7 @@ export default {
     },
     fetchExpiringSoon() {
       const token = localStorage.getItem('token');
-      if (!token || token.split('.').length !== 3) {
+      if (!token) {
         alert('未找到登录信息，请重新登录');
         this.$router.push({ name: 'Login' });
         return;
@@ -147,11 +182,54 @@ export default {
           })
           .then(response => {
             this.expiringSoon = response.data;
-            this.showExpiringSoon = true;
+            this.expiringSoon.forEach(item => {
+              this.fetchInventoryQuantity(item);
+            });
           })
           .catch(error => {
             console.error('查询即将过期药品失败:', error);
             alert('查询即将过期药品失败，请重试');
+          });
+    },
+    fetchExpired() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('未找到登录信息，请重新登录');
+        this.$router.push({ name: 'Login' });
+        return;
+      }
+
+      axios
+          .get('/api/drugs/expired', {
+            headers: {
+              'Authorization': token
+            }
+          })
+          .then(response => {
+            this.expired = response.data.content;
+            this.expired.forEach(item => {
+              this.fetchInventoryQuantity(item);
+            });
+          })
+          .catch(error => {
+            console.error('查询已过期药品失败:', error);
+            alert('查询已过期药品失败，请重试');
+          });
+    },
+    fetchInventoryQuantity(drug) {
+      const token = localStorage.getItem('token');
+      axios
+          .get(`/api/inventories/${drug.drugId}`, {
+            headers: {
+              'Authorization': token
+            }
+          })
+          .then(response => {
+            drug.quantity = response.data.quantity;
+          })
+          .catch(error => {
+            console.error(`查询药品 ${drug.name} 库存量失败:`, error);
+            drug.quantity = '未知';
           });
     },
     submitInventory() {
@@ -212,13 +290,26 @@ export default {
       this.showForm = false;
       this.showEditModal = false;
     },
-    closeEditModal() {
-      this.showEditModal = false;
-    },
     toggleForm() {
       this.showForm = !this.showForm;
       if (!this.showForm) {
         this.resetForm();
+      }
+    },
+    toggleView(view) {
+      this.showExpiringSoon = false;
+      this.showExpired = false;
+
+      if (view === 'expiringSoon') {
+        this.showExpiringSoon = !this.showExpiringSoon;
+        if (this.showExpiringSoon) {
+          this.fetchExpiringSoon();
+        }
+      } else if (view === 'expired') {
+        this.showExpired = !this.showExpired;
+        if (this.showExpired) {
+          this.fetchExpired();
+        }
       }
     },
     formatDate(dateString) {
@@ -255,6 +346,12 @@ export default {
   padding: 20px;
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
 h2 {
   margin-top: 0;
 }
@@ -287,6 +384,10 @@ form button {
   margin-right: 10px;
 }
 
+.highlight {
+  color: red;
+}
+
 /* Modal 样式 */
 .modal {
   position: fixed;
@@ -310,10 +411,5 @@ form button {
 
 .modal-content h2 {
   margin-top: 0;
-}
-
-.highlight {
-  color: red;
-  font-weight: bold;
 }
 </style>
