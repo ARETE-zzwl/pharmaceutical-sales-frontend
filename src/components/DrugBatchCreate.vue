@@ -23,6 +23,10 @@
           过期日期:
           <input v-model="drug.expirationDate" type="date" required />
         </label>
+        <label>
+          单价:
+          <input v-model="drug.unitPrice" type="number" step="0.01" required />
+        </label>
         <button type="button" @click="removeDrug(index)">移除药品</button>
       </div>
       <button type="button" @click="addDrug">添加药品</button>
@@ -43,7 +47,8 @@ export default {
           specification: '',
           manufacturer: '',
           batchNumber: '',
-          expirationDate: ''
+          expirationDate: '',
+          unitPrice: 0
         }
       ]
     };
@@ -55,7 +60,8 @@ export default {
         specification: '',
         manufacturer: '',
         batchNumber: '',
-        expirationDate: ''
+        expirationDate: '',
+        unitPrice: 0
       });
     },
     removeDrug(index) {
@@ -63,7 +69,7 @@ export default {
     },
     createDrugs() {
       const token = localStorage.getItem('token');
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = token;
       axios
           .post('/api/drugs/batch', this.drugs)
           .then(response => {

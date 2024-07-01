@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <nav v-if="isLoggedIn">
+    <nav>
       <router-link to="/">首页</router-link>
-      <router-link to="/sales-query">查询销售记录和财务报表</router-link>
+      <router-link to="/financial-stats">财务记录管理</router-link>
       <router-link to="/drug-inventory">药品库存管理</router-link>
-      <router-link to="/drug-search">药品检索</router-link>
+      <router-link to="/drug-manage">药品管理</router-link>
     </nav>
     <router-view/>
   </div>
@@ -12,17 +12,20 @@
 
 <script>
 export default {
-  name: 'App',
-  data() {
-    return {
-      isLoggedIn: false
-    };
-  },
-  created() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.isLoggedIn = true;
-    }
-  }
+  name: 'App'
 };
 </script>
+
+<style>
+nav {
+  padding: 16px;
+}
+nav a {
+  margin-right: 16px;
+  text-decoration: none;
+  color: #42b983;
+}
+nav a.router-link-exact-active {
+  font-weight: bold;
+}
+</style>

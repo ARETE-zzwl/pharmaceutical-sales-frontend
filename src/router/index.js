@@ -5,6 +5,9 @@ import RegisterView from '../views/RegisterView.vue';
 import SalesQuery from '../components/SalesQuery.vue';
 import DrugInventory from '../components/DrugInventory.vue';
 import DrugSearch from '../components/DrugSearch.vue';
+import FinancialStats from '../components/FinancialStats.vue';
+import DrugBatchCreate from "@/components/DrugBatchCreate.vue";
+import DrugManage from "@/components/DrugManage.vue";
 
 const routes = [
     {
@@ -44,6 +47,24 @@ const routes = [
         name: 'DrugSearch',
         component: DrugSearch,
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/financial-stats',
+        name: 'FinancialStats',
+        component: FinancialStats,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/drug-batch-create',
+        name: 'DrugBatchCreate',
+        component: DrugBatchCreate,
+        meta: { requiresAuth: true}
+    },
+    {
+        path: '/drug-manage',
+        name: 'DrugManage',
+        component: DrugManage,
+        meta: { requiresAuth: true}
     }
 ];
 

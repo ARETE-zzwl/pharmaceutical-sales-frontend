@@ -9,8 +9,8 @@
     <div class="card">
       <h2>功能概览</h2>
       <ul>
-        <li><a @click="navigateTo('DrugInventory')">药品库存管理</a></li>
-        <li><a @click="navigateTo('DrugSearch')">药品搜索</a></li>
+        <li><a @click="navigateTo('DrugManage')">药品管理</a></li>
+        <li><a @click="navigateTo('FinancialStats')">财务记录管理</a></li> <!-- 添加这个 -->
       </ul>
     </div>
   </div>
@@ -25,3 +25,23 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+h2 {
+  margin-top: 0;
+}
+</style>
