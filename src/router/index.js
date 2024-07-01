@@ -2,12 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
-import SalesQuery from '../components/SalesQuery.vue';
+import StatsQuery from "@/components/StatsQuery.vue";
 import DrugInventory from '../components/DrugInventory.vue';
 import DrugSearch from '../components/DrugSearch.vue';
 import FinancialStats from '../components/FinancialStats.vue';
-import DrugBatchCreate from "@/components/DrugBatchCreate.vue";
-import DrugManage from "@/components/DrugManage.vue";
+import DrugBatchCreate from '../components/DrugBatchCreate.vue';
+import DrugManage from '../components/DrugManage.vue';
+import DrugPredict from '../components/DrugPredict.vue';
 
 const routes = [
     {
@@ -31,9 +32,9 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: '/sales-query',
-        name: 'SalesQuery',
-        component: SalesQuery,
+        path: '/stats-query',
+        name: 'StatsQuery',
+        component: StatsQuery,
         meta: { requiresAuth: true }
     },
     {
@@ -58,12 +59,18 @@ const routes = [
         path: '/drug-batch-create',
         name: 'DrugBatchCreate',
         component: DrugBatchCreate,
-        meta: { requiresAuth: true}
+        meta: { requiresAuth: true }
     },
     {
         path: '/drug-manage',
         name: 'DrugManage',
         component: DrugManage,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/drug-predict',
+        name: 'DrugPredict',
+        component: DrugPredict,
         meta: { requiresAuth: true}
     }
 ];

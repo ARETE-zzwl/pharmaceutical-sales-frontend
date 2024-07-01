@@ -2,7 +2,7 @@
   <div class="container">
     <h1>财务记录管理</h1>
     <button @click="toggleCreateForm">新增财务记录</button>
-    <button @click="navigateToSalesQuery">查询销售记录</button> <!-- 添加这个按钮 -->
+    <button @click="navigateToStatsQuery">查询财务记录</button> <!-- 添加这个按钮 -->
     <div v-if="showCreateForm" class="card">
       <h2>新增财务记录</h2>
       <form @submit.prevent="createStats">
@@ -210,8 +210,8 @@ export default {
         this.fetchStats(page);
       }
     },
-    navigateToSalesQuery() {
-      this.$router.push({ name: 'SalesQuery' });
+    navigateToStatsQuery() {
+      this.$router.push({ name: 'StatsQuery' });
     }
   }
 };

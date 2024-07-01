@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>销售查询</h1>
+    <h1>财务报表查询</h1>
     <div class="card">
       <h2>查询条件</h2>
       <form @submit.prevent="searchSales">
