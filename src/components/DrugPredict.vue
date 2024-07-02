@@ -68,7 +68,7 @@ export default {
             }
           })
           .then(response => {
-            this.drugs = response.data.content;
+            this.drugs = response.data.content || [];
           })
           .catch(error => {
             console.error('获取药品信息失败:', error);
