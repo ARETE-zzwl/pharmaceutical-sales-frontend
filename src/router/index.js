@@ -9,7 +9,7 @@ import FinancialStats from '../components/FinancialStats.vue';
 import DrugBatchCreate from '../components/DrugBatchCreate.vue';
 import DrugManage from '../components/DrugManage.vue';
 import DrugPredict from '../components/DrugPredict.vue';
-
+import SalesQuery from "@/components/SalesQuery.vue";
 const routes = [
     {
         path: '/',
@@ -71,6 +71,12 @@ const routes = [
         path: '/drug-predict',
         name: 'DrugPredict',
         component: DrugPredict,
+        meta: { requiresAuth: true}
+    },
+    {
+        path: '/sales-query',
+        name: 'SalesQuery',
+        component: SalesQuery,
         meta: { requiresAuth: true}
     }
 ];

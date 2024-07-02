@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>药品库存预测</h1>
+    <h1>药品库存AI预测</h1>
     <form @submit.prevent="predictAllInventories">
       <label>
         预测天数:

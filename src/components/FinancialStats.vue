@@ -2,7 +2,7 @@
   <div class="container">
     <h1>财务记录管理</h1>
     <button @click="toggleCreateForm">新增财务记录</button>
-    <button @click="navigateToStatsQuery">查询财务记录</button> <!-- 添加这个按钮 -->
+    <button @click="navigateToStatsQuery">查询财务记录</button>
     <div v-if="showCreateForm" class="card">
       <h2>新增财务记录</h2>
       <form @submit.prevent="createStats">
@@ -58,28 +58,32 @@
         <button @click="changePage(currentPage + 1)" :disabled="currentPage + 1 >= totalPages">下一页</button>
       </div>
     </div>
-    <div v-if="editingStats" class="card">
-      <h2>编辑财务记录</h2>
-      <form @submit.prevent="updateStats">
-        <label>
-          日期:
-          <input v-model="editingStats.statsDate" type="date" required />
-        </label>
-        <label>
-          销售金额:
-          <input v-model.number="editingStats.salesAmount" type="number" required />
-        </label>
-        <label>
-          采购金额:
-          <input v-model.number="editingStats.purchaseAmount" type="number" required />
-        </label>
-        <label>
-          退货金额:
-          <input v-model.number="editingStats.returnAmount" type="number" required />
-        </label>
-        <button type="submit">保存</button>
-        <button type="button" @click="cancelEdit">取消</button>
-      </form>
+
+    <!-- 编辑财务记录模态框 -->
+    <div v-if="showEditModal" class="modal">
+      <div class="modal-content">
+        <h2>编辑财务记录</h2>
+        <form @submit.prevent="updateStats">
+          <label>
+            日期:
+            <input v-model="editingStats.statsDate" type="date" required />
+          </label>
+          <label>
+            销售金额:
+            <input v-model.number="editingStats.salesAmount" type="number" required />
+          </label>
+          <label>
+            采购金额:
+            <input v-model.number="editingStats.purchaseAmount" type="number" required />
+          </label>
+          <label>
+            退货金额:
+            <input v-model.number="editingStats.returnAmount" type="number" required />
+          </label>
+          <button type="submit">保存</button>
+          <button type="button" @click="cancelEdit">取消</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -99,6 +103,7 @@ export default {
       },
       editingStats: null,
       showCreateForm: false,
+      showEditModal: false,
       currentPage: 0,
       totalPages: 1
     };
@@ -170,6 +175,7 @@ export default {
     },
     editStats(stats) {
       this.editingStats = { ...stats, statsDate: stats.statsDate.split('T')[0] };
+      this.showEditModal = true;
     },
     updateStats() {
       const token = localStorage.getItem('token');
@@ -182,6 +188,7 @@ export default {
           .then(() => {
             this.fetchStats();
             this.editingStats = null;
+            this.showEditModal = false;
           })
           .catch(error => {
             console.error('更新财务记录失败:', error);
@@ -204,6 +211,7 @@ export default {
     },
     cancelEdit() {
       this.editingStats = null;
+      this.showEditModal = false;
     },
     changePage(page) {
       if (page >= 0 && page < this.totalPages) {
@@ -259,5 +267,43 @@ th {
 
 .pagination button {
   padding: 10px;
+}
+
+/* Modal 样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+form input {
+  margin-left: 10px;
+}
+
+form button {
+  margin-right: 10px;
 }
 </style>
