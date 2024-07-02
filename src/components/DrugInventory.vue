@@ -1,114 +1,128 @@
 <template>
-  <div class="container">
-    <h1>药品库存</h1>
-    <div class="card">
-      <h2>库存详情</h2>
-      <div class="button-container">
-        <button @click="toggleView('expiringSoon')">
+  <div class="container mx-auto p-5">
+    <h1 class="text-4xl font-bold mb-6 text-center">药品库存</h1>
+    <div class="card bg-white rounded-lg shadow-md p-6 mb-6">
+      <h2 class="text-2xl font-semibold mb-4">库存详情</h2>
+      <div class="button-container flex justify-between mb-4">
+        <button @click="toggleView('expiringSoon')" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 mr-2">
           {{ showExpiringSoon ? '显示所有库存' : '查询即将过期的药品' }}
         </button>
-        <button @click="toggleView('expired')">
+        <button @click="toggleView('expired')" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 mr-2">
           {{ showExpired ? '显示所有库存' : '查询已过期的药品' }}
         </button>
-        <button v-if="showExpiringSoon || showExpired" @click="toggleView('all')">
+        <button v-if="showExpiringSoon || showExpired" @click="toggleView('all')" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
           显示所有库存
         </button>
       </div>
 
-      <table v-if="showExpiringSoon">
+      <table v-if="showExpiringSoon" class="min-w-full bg-white border">
         <thead>
         <tr>
-          <th>药品ID</th>
-          <th>药品名称</th>
-          <th>库存量</th>
-          <th>批号</th>
-          <th>过期时间</th>
+          <th class="py-2 px-4 border-b">药品ID</th>
+          <th class="py-2 px-4 border-b">药品名称</th>
+          <th class="py-2 px-4 border-b">库存量</th>
+          <th class="py-2 px-4 border-b">批号</th>
+          <th class="py-2 px-4 border-b">过期时间</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in expiringSoon" :key="item.drugId">
-          <td>{{ item.drugId }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.batchNumber }}</td>
-          <td :class="{ highlight: true }">{{ formatDate(item.expirationDate) }}</td>
+        <tr v-for="item in expiringSoon" :key="item.drugId" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ item.drugId }}</td>
+          <td class="py-2 px-4 border-b">{{ item.name }}</td>
+          <td class="py-2 px-4 border-b">{{ item.quantity }}</td>
+          <td class="py-2 px-4 border-b">{{ item.batchNumber }}</td>
+          <td :class="{ highlight: true }" class="py-2 px-4 border-b">{{ formatDate(item.expirationDate) }}</td>
         </tr>
         </tbody>
       </table>
 
-      <table v-else-if="showExpired">
+      <table v-else-if="showExpired" class="min-w-full bg-white border">
         <thead>
         <tr>
-          <th>药品ID</th>
-          <th>药品名称</th>
-          <th>库存量</th>
-          <th>批号</th>
-          <th>过期时间</th>
+          <th class="py-2 px-4 border-b">药品ID</th>
+          <th class="py-2 px-4 border-b">药品名称</th>
+          <th class="py-2 px-4 border-b">库存量</th>
+          <th class="py-2 px-4 border-b">批号</th>
+          <th class="py-2 px-4 border-b">过期时间</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in expired" :key="item.drugId">
-          <td>{{ item.drugId }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.batchNumber }}</td>
-          <td :class="{ highlight: true }">{{ formatDate(item.expirationDate) }}</td>
+        <tr v-for="item in expired" :key="item.drugId" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ item.drugId }}</td>
+          <td class="py-2 px-4 border-b">{{ item.name }}</td>
+          <td class="py-2 px-4 border-b">{{ item.quantity }}</td>
+          <td class="py-2 px-4 border-b">{{ item.batchNumber }}</td>
+          <td :class="{ highlight: true }" class="py-2 px-4 border-b">{{ formatDate(item.expirationDate) }}</td>
         </tr>
         </tbody>
       </table>
 
-      <table v-else>
+      <table v-else class="min-w-full bg-white border">
         <thead>
         <tr>
-          <th>药品名称</th>
-          <th>库存量</th>
-          <th>单价</th>
-          <th>批号</th>
-          <th>过期时间</th>
-          <th>操作</th>
+          <th class="py-2 px-4 border-b">药品名称</th>
+          <th class="py-2 px-4 border-b">库存量</th>
+          <th class="py-2 px-4 border-b">单价</th>
+          <th class="py-2 px-4 border-b">批号</th>
+          <th class="py-2 px-4 border-b">过期时间</th>
+          <th class="py-2 px-4 border-b">操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in inventory" :key="item.inventoryId">
-          <td>{{ item.drug ? item.drug.name : '未知药品' }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.drug ? item.drug.unitPrice : '未知价格' }}</td>
-          <td>{{ item.batchNumber }}</td>
-          <td>{{ formatDate(item.expirationDate) }}</td>
-          <td>
-            <button @click="editInventory(item)">编辑</button>
-            <button @click="deleteInventory(item.inventoryId)">删除</button>
+        <tr v-for="item in inventory" :key="item.inventoryId" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ item.drug ? item.drug.name : '未知药品' }}</td>
+          <td class="py-2 px-4 border-b">{{ item.quantity }}</td>
+          <td class="py-2 px-4 border-b">{{ item.drug ? item.drug.unitPrice : '未知价格' }}</td>
+          <td class="py-2 px-4 border-b">{{ item.batchNumber }}</td>
+          <td class="py-2 px-4 border-b">{{ formatDate(item.expirationDate) }}</td>
+          <td class="py-2 px-4 border-b flex space-x-2">
+            <button @click="editInventory(item)" class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-700">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button @click="deleteInventory(item.inventoryId)" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700">
+              <i class="fas fa-trash-alt"></i>
+            </button>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
 
-    <button @click="toggleForm">{{ showForm ? '取消新增库存' : '新增库存' }}</button>
+    <div class="flex justify-center">
+      <button @click="toggleForm" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+        {{ showForm ? '取消新增库存' : '新增库存' }}
+      </button>
+    </div>
 
     <!-- 库存模态框 -->
-    <div v-if="showForm || showEditModal" class="modal">
-      <div class="modal-content">
-        <h2>{{ editMode ? '编辑库存' : '新增库存' }}</h2>
+    <div v-if="showForm || showEditModal" class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+      <div class="modal-content bg-white p-5 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">{{ editMode ? '编辑库存' : '新增库存' }}</h2>
         <form @submit.prevent="submitInventory">
-          <label>
+          <label class="block mb-3">
             药品ID:
-            <input type="number" v-model.number="form.drug.drugId" required />
+            <input type="number" v-model.number="form.drug.drugId" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             库存量:
-            <input type="number" v-model.number="form.quantity" required />
+            <input type="number" v-model.number="form.quantity" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             批号:
-            <input type="text" v-model="form.batchNumber" required />
+            <input type="text" v-model="form.batchNumber" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             过期时间:
-            <input type="date" v-model="form.expirationDate" required />
+            <input type="date" v-model="form.expirationDate" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <button type="submit">{{ editMode ? '更新' : '创建' }}</button>
-          <button type="button" @click="resetForm">取消</button>
+          <div class="flex justify-end space-x-3">
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+              {{ editMode ? '更新' : '创建' }}
+            </button>
+            <button type="button" @click="resetForm" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">
+              取消
+            </button>
+          </div>
         </form>
       </div>
     </div>

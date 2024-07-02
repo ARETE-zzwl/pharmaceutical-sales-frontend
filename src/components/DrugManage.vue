@@ -1,33 +1,37 @@
 <template>
-  <div class="container">
-    <h1>药品管理</h1>
-    <div class="button-container">
-      <button @click="navigateTo('DrugBatchCreate')">批量添加药品</button>
-      <button @click="navigateTo('DrugSearch')">检索药品</button>
+  <div class="container mx-auto p-5">
+    <h1 class="text-4xl font-bold mb-6 text-center">药品管理</h1>
+    <div class="button-container flex justify-between mb-6">
+      <button @click="navigateTo('DrugBatchCreate')" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">批量添加药品</button>
+      <button @click="navigateTo('DrugSearch')" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">检索药品</button>
     </div>
-    <div class="card">
-      <h2>药品列表</h2>
-      <table>
+    <div class="card bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-semibold mb-4">药品列表</h2>
+      <table class="min-w-full bg-white border">
         <thead>
         <tr>
-          <th>ID</th>
-          <th>名称</th>
-          <th>规格</th>
-          <th>生产商</th>
-          <th>单价</th>
-          <th>操作</th>
+          <th class="py-2 px-4 border-b">ID</th>
+          <th class="py-2 px-4 border-b">名称</th>
+          <th class="py-2 px-4 border-b">规格</th>
+          <th class="py-2 px-4 border-b">生产商</th>
+          <th class="py-2 px-4 border-b">单价</th>
+          <th class="py-2 px-4 border-b">操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="drug in drugs" :key="drug.drugId">
-          <td>{{ drug.drugId }}</td>
-          <td>{{ drug.name }}</td>
-          <td>{{ drug.specification }}</td>
-          <td>{{ drug.manufacturer }}</td>
-          <td>{{ drug.unitPrice }}</td>
-          <td>
-            <button @click="editDrug(drug)">更新</button>
-            <button @click="showInventoryModal(drug)">入库</button>
+        <tr v-for="drug in drugs" :key="drug.drugId" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ drug.drugId }}</td>
+          <td class="py-2 px-4 border-b">{{ drug.name }}</td>
+          <td class="py-2 px-4 border-b">{{ drug.specification }}</td>
+          <td class="py-2 px-4 border-b">{{ drug.manufacturer }}</td>
+          <td class="py-2 px-4 border-b">{{ drug.unitPrice }}</td>
+          <td class="py-2 px-4 border-b flex space-x-2">
+            <button @click="editDrug(drug)" class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-700">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button @click="showInventoryModal(drug)" class="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-700">
+              <i class="fas fa-plus"></i>
+            </button>
           </td>
         </tr>
         </tbody>
@@ -35,51 +39,55 @@
     </div>
 
     <!-- 更新药品模态框 -->
-    <div v-if="showEditModal" class="modal">
-      <div class="modal-content">
-        <h2>更新药品信息</h2>
+    <div v-if="showEditModal" class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+      <div class="modal-content bg-white p-5 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">更新药品信息</h2>
         <form @submit.prevent="updateDrug">
-          <label>
+          <label class="block mb-3">
             名称:
-            <input v-model="selectedDrug.name" type="text" required />
+            <input v-model="selectedDrug.name" type="text" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             规格:
-            <input v-model="selectedDrug.specification" type="text" required />
+            <input v-model="selectedDrug.specification" type="text" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             生产商:
-            <input v-model="selectedDrug.manufacturer" type="text" required />
+            <input v-model="selectedDrug.manufacturer" type="text" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             单价:
-            <input v-model="selectedDrug.unitPrice" type="number" step="0.01" required />
+            <input v-model="selectedDrug.unitPrice" type="number" step="0.01" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <button type="submit">提交</button>
-          <button type="button" @click="closeEditModal">取消</button>
+          <div class="flex justify-end space-x-3">
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">提交</button>
+            <button type="button" @click="closeEditModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">取消</button>
+          </div>
         </form>
       </div>
     </div>
 
     <!-- 入库模态框 -->
-    <div v-if="showInventoryModalFlag" class="modal">
-      <div class="modal-content">
-        <h2>入库药品</h2>
+    <div v-if="showInventoryModalFlag" class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+      <div class="modal-content bg-white p-5 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">入库药品</h2>
         <form @submit.prevent="createInventory">
-          <label>
+          <label class="block mb-3">
             批号:
-            <input v-model="inventoryData.batchNumber" type="text" required />
+            <input v-model="inventoryData.batchNumber" type="text" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             数量:
-            <input v-model.number="inventoryData.quantity" type="number" required />
+            <input v-model.number="inventoryData.quantity" type="number" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             过期日期:
-            <input v-model="inventoryData.expirationDate" type="date" required />
+            <input v-model="inventoryData.expirationDate" type="date" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <button type="submit">提交</button>
-          <button type="button" @click="closeInventoryModal">取消</button>
+          <div class="flex justify-end space-x-3">
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">提交</button>
+            <button type="button" @click="closeInventoryModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">取消</button>
+          </div>
         </form>
       </div>
     </div>
@@ -114,7 +122,7 @@ export default {
       axios
           .get('/api/drugs')
           .then(response => {
-            this.drugs = response.data.content; // 更新为适应返回结构体
+            this.drugs = response.data.content;
           })
           .catch(error => {
             console.error('获取药品信息失败:', error);
@@ -134,7 +142,7 @@ export default {
             console.log('更新药品信息成功:', response.data);
             alert('更新药品信息成功');
             this.showEditModal = false;
-            this.fetchDrugs(); // 刷新药品列表
+            this.fetchDrugs();
           })
           .catch(error => {
             console.error('更新药品信息失败:', error);

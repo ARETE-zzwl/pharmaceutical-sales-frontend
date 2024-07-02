@@ -1,70 +1,88 @@
 <template>
-  <div class="container">
-    <h1>销售记录管理</h1>
-    <button @click="toggleCreateForm">新增销售记录</button>
-    <div class="card">
-      <h2>销售记录</h2>
-      <table>
+  <div class="container mx-auto p-5">
+    <h1 class="text-4xl font-bold mb-6 text-center">销售记录管理</h1>
+    <div class="flex justify-center mb-4">
+      <button @click="toggleCreateForm" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 mr-2">
+        新增销售记录
+      </button>
+    </div>
+    <div class="card bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-semibold mb-4">销售记录</h2>
+      <table class="min-w-full bg-white border">
         <thead>
         <tr>
-          <th>药品ID</th>
-          <th>数量</th>
-          <th>单价</th>
-          <th>客户ID</th>
-          <th>销售日期</th>
-          <th>操作</th>
+          <th class="py-2 px-4 border-b">药品ID</th>
+          <th class="py-2 px-4 border-b">数量</th>
+          <th class="py-2 px-4 border-b">单价</th>
+          <th class="py-2 px-4 border-b">客户ID</th>
+          <th class="py-2 px-4 border-b">销售日期</th>
+          <th class="py-2 px-4 border-b">操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in sales" :key="item.salesId">
-          <td>{{ item.drug.drugId }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.unitPrice }}</td>
-          <td>{{ item.customer.customerId }}</td>
-          <td>{{ formatDate(item.salesDate) }}</td>
-          <td>
-            <button @click="editSales(item)">编辑</button>
-            <button @click="deleteSales(item.salesId)">删除</button>
+        <tr v-for="item in sales" :key="item.salesId" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ item.drug.drugId }}</td>
+          <td class="py-2 px-4 border-b">{{ item.quantity }}</td>
+          <td class="py-2 px-4 border-b">{{ item.unitPrice }}</td>
+          <td class="py-2 px-4 border-b">{{ item.customer.customerId }}</td>
+          <td class="py-2 px-4 border-b">{{ formatDate(item.salesDate) }}</td>
+          <td class="py-2 px-4 border-b flex space-x-2">
+            <button @click="editSales(item)" class="bg-yellow-500 text-white py-1 px-2 rounded hover:bg-yellow-700">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button @click="deleteSales(item.salesId)" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700">
+              <i class="fas fa-trash-alt"></i>
+            </button>
           </td>
         </tr>
         </tbody>
       </table>
-      <div class="pagination">
-        <button @click="changePage(currentPage - 1)" :disabled="currentPage === 0">上一页</button>
+      <div class="flex justify-between items-center mt-4">
+        <button @click="changePage(currentPage - 1)" :disabled="currentPage === 0" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
+          上一页
+        </button>
         <span>第 {{ currentPage + 1 }} 页 / 共 {{ totalPages }} 页</span>
-        <button @click="changePage(currentPage + 1)" :disabled="currentPage + 1 >= totalPages">下一页</button>
-        <input v-model.number="pageInput" type="number" min="1" :max="totalPages" placeholder="页码" />
-        <button @click="goToPage">跳转</button>
+        <button @click="changePage(currentPage + 1)" :disabled="currentPage + 1 >= totalPages" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">
+          下一页
+        </button>
+        <input v-model.number="pageInput" type="number" min="1" :max="totalPages" placeholder="页码" class="w-16 text-center border rounded mx-2 py-1 px-2">
+        <button @click="goToPage" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">跳转</button>
       </div>
     </div>
 
     <!-- 新增/编辑销售记录模态框 -->
     <div v-if="showForm || showEditModal" class="modal">
-      <div class="modal-content">
-        <h2>{{ editMode ? '编辑销售记录' : '新增销售记录' }}</h2>
+      <div class="modal-content bg-white p-5 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">{{ editMode ? '编辑销售记录' : '新增销售记录' }}</h2>
         <form @submit.prevent="submitSales">
-          <label>
+          <label class="block mb-3">
             药品ID:
-            <input type="number" v-model.number="form.drug.drugId" required />
+            <input type="number" v-model.number="form.drug.drugId" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             数量:
-            <input type="number" v-model.number="form.quantity" required />
+            <input type="number" v-model.number="form.quantity" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             单价:
-            <input type="number" v-model.number="form.unitPrice" step="0.01" required />
+            <input type="number" v-model.number="form.unitPrice" step="0.01" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             客户ID:
-            <input type="number" v-model.number="form.customer.customerId" required />
+            <input type="number" v-model.number="form.customer.customerId" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <label>
+          <label class="block mb-3">
             销售日期:
-            <input type="date" v-model="form.salesDate" required />
+            <input type="date" v-model="form.salesDate" required class="mt-1 p-2 w-full border rounded">
           </label>
-          <button type="submit">{{ editMode ? '更新' : '创建' }}</button>
-          <button type="button" @click="resetForm">取消</button>
+          <div class="flex justify-end space-x-3">
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
+              {{ editMode ? '更新' : '创建' }}
+            </button>
+            <button type="button" @click="resetForm" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700">
+              取消
+            </button>
+          </div>
         </form>
       </div>
     </div>

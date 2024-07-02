@@ -1,87 +1,104 @@
 <template>
-  <div class="container">
-    <h1>财务记录管理</h1>
-    <button @click="toggleCreateForm">新增财务记录</button>
-    <button @click="navigateToStatsQuery">查询财务记录</button>
-    <div v-if="showCreateForm" class="card">
-      <h2>新增财务记录</h2>
-      <form @submit.prevent="createStats">
-        <label>
-          日期:
-          <input v-model="newStats.statsDate" type="date" required />
-        </label>
-        <label>
-          销售金额:
-          <input v-model.number="newStats.salesAmount" type="number" required />
-        </label>
-        <label>
-          采购金额:
-          <input v-model.number="newStats.purchaseAmount" type="number" required />
-        </label>
-        <label>
-          退货金额:
-          <input v-model.number="newStats.returnAmount" type="number" required />
-        </label>
-        <button type="submit">提交</button>
+  <div class="max-w-4xl mx-auto p-5">
+    <h1 class="text-4xl font-bold mb-6 text-center text-indigo-600 animate-fadeIn">财务记录管理</h1>
+    <div class="flex justify-between mb-6">
+      <button @click="toggleCreateForm" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">
+        <i class="fas fa-plus mr-2"></i>新增财务记录
+      </button>
+      <button @click="navigateToStatsQuery" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">
+        <i class="fas fa-search mr-2"></i>查询财务记录
+      </button>
+    </div>
+
+    <div v-if="showCreateForm" class="bg-white rounded-lg shadow-md p-6 mb-6">
+      <h2 class="text-2xl font-semibold mb-4 text-gray-800">新增财务记录</h2>
+      <form @submit.prevent="createStats" class="space-y-4">
+        <div class="flex items-center">
+          <label class="w-32">日期:</label>
+          <input v-model="newStats.statsDate" type="date" required class="flex-1 px-4 py-2 border rounded"/>
+        </div>
+        <div class="flex items-center">
+          <label class="w-32">销售金额:</label>
+          <input v-model.number="newStats.salesAmount" type="number" required class="flex-1 px-4 py-2 border rounded"/>
+        </div>
+        <div class="flex items-center">
+          <label class="w-32">采购金额:</label>
+          <input v-model.number="newStats.purchaseAmount" type="number" required class="flex-1 px-4 py-2 border rounded"/>
+        </div>
+        <div class="flex items-center">
+          <label class="w-32">退货金额:</label>
+          <input v-model.number="newStats.returnAmount" type="number" required class="flex-1 px-4 py-2 border rounded"/>
+        </div>
+        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition duration-300">提交</button>
       </form>
     </div>
-    <div class="card">
-      <h2>财务记录</h2>
-      <table>
+
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+      <h2 class="text-2xl font-semibold mb-4 text-gray-800">财务记录</h2>
+      <table class="min-w-full bg-white">
         <thead>
         <tr>
-          <th>ID</th>
-          <th>日期</th>
-          <th>销售金额</th>
-          <th>采购金额</th>
-          <th>退货金额</th>
-          <th>操作</th>
+          <th class="py-2 px-4 border-b">ID</th>
+          <th class="py-2 px-4 border-b">日期</th>
+          <th class="py-2 px-4 border-b">销售金额</th>
+          <th class="py-2 px-4 border-b">采购金额</th>
+          <th class="py-2 px-4 border-b">退货金额</th>
+          <th class="py-2 px-4 border-b">操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="item in stats" :key="item.statsId">
-          <td>{{ item.statsId }}</td>
-          <td>{{ formatDate(item.statsDate) }}</td>
-          <td>{{ item.salesAmount }}</td>
-          <td>{{ item.purchaseAmount }}</td>
-          <td>{{ item.returnAmount }}</td>
-          <td>
-            <button @click="editStats(item)">编辑</button>
-            <button @click="deleteStats(item.statsId)">删除</button>
+          <td class="py-2 px-4 border-b">{{ item.statsId }}</td>
+          <td class="py-2 px-4 border-b">{{ formatDate(item.statsDate) }}</td>
+          <td class="py-2 px-4 border-b">{{ item.salesAmount }}</td>
+          <td class="py-2 px-4 border-b">{{ item.purchaseAmount }}</td>
+          <td class="py-2 px-4 border-b">{{ item.returnAmount }}</td>
+          <td class="py-2 px-4 border-b">
+            <button @click="editStats(item)" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition duration-300">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button @click="deleteStats(item.statsId)" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-300">
+              <i class="fas fa-trash"></i>
+            </button>
           </td>
         </tr>
         </tbody>
       </table>
-      <div class="pagination">
-        <button @click="changePage(currentPage - 1)" :disabled="currentPage === 0">上一页</button>
-        <span>第 {{ currentPage + 1 }} 页 / 共 {{ totalPages }} 页</span>
-        <button @click="changePage(currentPage + 1)" :disabled="currentPage + 1 >= totalPages">下一页</button>
+      <div class="flex justify-between items-center mt-4">
+        <button @click="changePage(currentPage - 1)" :disabled="currentPage === 0" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition duration-300">
+          上一页
+        </button>
+        <span class="text-gray-700">第 {{ currentPage + 1 }} 页 / 共 {{ totalPages }} 页</span>
+        <button @click="changePage(currentPage + 1)" :disabled="currentPage + 1 >= totalPages" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition duration-300">
+          下一页
+        </button>
       </div>
     </div>
 
-    <!-- 编辑财务记录模态框 -->
     <div v-if="showEditModal" class="modal">
       <div class="modal-content">
-        <h2>编辑财务记录</h2>
-        <form @submit.prevent="updateStats">
-          <label>
-            日期:
-            <input v-model="editingStats.statsDate" type="date" required />
-          </label>
-          <label>
-            销售金额:
-            <input v-model.number="editingStats.salesAmount" type="number" required />
-          </label>
-          <label>
-            采购金额:
-            <input v-model.number="editingStats.purchaseAmount" type="number" required />
-          </label>
-          <label>
-            退货金额:
-            <input v-model.number="editingStats.returnAmount" type="number" required />
-          </label>
-          <button type="submit">保存</button>
-          <button type="button" @click="cancelEdit">取消</button>
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">编辑财务记录</h2>
+        <form @submit.prevent="updateStats" class="space-y-4">
+          <div class="flex items-center">
+            <label class="w-32">日期:</label>
+            <input v-model="editingStats.statsDate" type="date" required class="flex-1 px-4 py-2 border rounded"/>
+          </div>
+          <div class="flex items-center">
+            <label class="w-32">销售金额:</label>
+            <input v-model.number="editingStats.salesAmount" type="number" required class="flex-1 px-4 py-2 border rounded"/>
+          </div>
+          <div class="flex items-center">
+            <label class="w-32">采购金额:</label>
+            <input v-model.number="editingStats.purchaseAmount" type="number" required class="flex-1 px-4 py-2 border rounded"/>
+          </div>
+          <div class="flex items-center">
+            <label class="w-32">退货金额:</label>
+            <input v-model.number="editingStats.returnAmount" type="number" required class="flex-1 px-4 py-2 border rounded"/>
+          </div>
+          <div class="flex justify-end space-x-4">
+            <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition duration-300">保存</button>
+            <button type="button" @click="cancelEdit" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition duration-300">取消</button>
+          </div>
         </form>
       </div>
     </div>
@@ -232,44 +249,67 @@ export default {
   padding: 20px;
 }
 
-.card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  padding: 20px;
+.bg-white {
+  background-color: white;
 }
 
-h2 {
-  margin-top: 0;
+.rounded-lg {
+  border-radius: 1rem;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.shadow-lg {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-th {
-  background-color: #f4f4f4;
+.shadow-2xl {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
 }
 
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+.p-5 {
+  padding: 1.25rem;
 }
 
-.pagination button {
-  padding: 10px;
+.p-6 {
+  padding: 1.5rem;
 }
 
-/* Modal 样式 */
+.p-8 {
+  padding: 2rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.hover\:shadow-2xl:hover {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+.transition-shadow {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -280,6 +320,7 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
