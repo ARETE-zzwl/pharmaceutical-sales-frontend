@@ -1,33 +1,33 @@
 <template>
-  <div class="container">
-    <h1>药品库存AI预测</h1>
-    <form @submit.prevent="predictAllInventories">
-      <label>
-        预测天数:
-        <input type="number" v-model="days" required />
+  <div class="container mx-auto p-5">
+    <h1 class="text-3xl font-bold mb-5 text-center text-indigo-600">药品库存AI预测</h1>
+    <form @submit.prevent="predictAllInventories" class="space-y-4">
+      <label class="block">
+        <span class="text-gray-700">预测天数:</span>
+        <input type="number" v-model="days" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
       </label>
-      <button type="submit">预测</button>
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">预测</button>
     </form>
 
-    <div v-if="loading" class="loading-overlay">
+    <div v-if="loading" class="loading-overlay flex justify-center items-center">
       <div class="spinner"></div>
     </div>
 
-    <div class="card" v-if="predictionResults.length && !loading">
-      <h2>预测结果</h2>
-      <table>
+    <div v-if="predictionResults.length && !loading" class="card mt-6">
+      <h2 class="text-2xl font-bold mb-4">预测结果</h2>
+      <table class="min-w-full bg-white">
         <thead>
         <tr>
-          <th>药品ID</th>
-          <th>药品名称</th>
-          <th>{{ days }} 天后的预测库存量</th>
+          <th class="py-2 px-4 border-b border-gray-300">药品ID</th>
+          <th class="py-2 px-4 border-b border-gray-300">药品名称</th>
+          <th class="py-2 px-4 border-b border-gray-300">{{ days }} 天后的预测库存量</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="result in predictionResults" :key="result.drugId">
-          <td>{{ result.drugId }}</td>
-          <td>{{ result.drugName }}</td>
-          <td :class="{ warning: result.predictedQuantity < 200 && !isNaN(result.predictedQuantity) }">
+          <td class="py-2 px-4 border-b border-gray-300">{{ result.drugId }}</td>
+          <td class="py-2 px-4 border-b border-gray-300">{{ result.drugName }}</td>
+          <td :class="{ 'text-red-500': result.predictedQuantity < 200 && !isNaN(result.predictedQuantity) }" class="py-2 px-4 border-b border-gray-300">
             {{ result.predictedQuantity }}
           </td>
         </tr>
@@ -118,53 +118,19 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css');
+
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
 }
 
 .card {
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
   padding: 20px;
 }
 
-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-form input {
-  margin-left: 10px;
-}
-
-form button {
-  margin-top: 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-th {
-  background-color: #f4f4f4;
-}
-
-.warning {
-  color: red;
-}
-
-/* 加载动画样式 */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -172,9 +138,6 @@ th {
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1000;
 }
 

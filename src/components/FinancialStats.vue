@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-4xl mx-auto p-5">
     <h1 class="text-4xl font-bold mb-6 text-center text-indigo-600 animate-fadeIn">财务记录管理</h1>
-    <div class="flex justify-between mb-6">
+    <div class="flex justify-center mb-4">
       <button @click="toggleCreateForm" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">
         <i class="fas fa-plus mr-2"></i>新增财务记录
       </button>
